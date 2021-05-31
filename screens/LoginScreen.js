@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { View, Text, SafeAreaView, TouchableOpacity, Dimensions, StyleSheet, Image, StatusBar, Touchable } from 'react-native'
 import { AntDesign } from '@expo/vector-icons';
 import NetInfo from "@react-native-community/netinfo";
@@ -12,6 +12,8 @@ const LoginScreen = () => {
 
   const [ buttonText, setButtonText ] = useState('')
 
+  const refRBSheet = useRef();
+
   const onSignIn = () => {
     NetInfo.fetch().then(state => {
       if (state.isConnected == true){
@@ -24,9 +26,9 @@ const LoginScreen = () => {
   }
 
   const initialTest = () => {
-    NewInfo.fetch().then(state => {
+    NetInfo.fetch().then(state => {
       if(state.isConnected == true){
-        RBSheet.open()
+        refRBSheet.current.open()
       } else {
         setButtonText('Se necesita Internet')
       }
@@ -34,7 +36,7 @@ const LoginScreen = () => {
   }
 
   const onPressLogo = () => {
-    RBSheet.open();
+    refRBSheet.current.open()
   }
 
   useEffect(() => {
@@ -48,6 +50,7 @@ const LoginScreen = () => {
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={'#1A1A1F'} barStyle='light-content' />
       <RBSheet
+        ref={refRBSheet}
         closeOnPressBack={true}
         animationType='fade'
         closeOnDragDown={false}
@@ -127,12 +130,12 @@ const LoginScreen = () => {
 
       <TouchableOpacity style={styles.logo} onPress={onPressLogo}>
         <Image source={require("../assets/logo.png")} style={styles.imageStyleLogo} />
-        <Text style={styles.loginText}>Inicie sesión en su cuenta para comenzar</Text>
+        <Text style={styles.loginText}>Bienvenido</Text>
       </TouchableOpacity>
 
       <View style={styles.googleSignIn}>
         <TouchableOpacity style={styles.googleSignInButton} onPress={onSignIn}>
-          <AntDesign name='heart' size={20} color='#fff' style={{ marginLeft: '5%'}} />
+          <AntDesign name='heart' size={21} color='#fff' style={{ marginLeft: '5%'}} />
           <Text style={styles.googleSignInText}>{buttonText}</Text>
         </TouchableOpacity>
       </View>
@@ -173,14 +176,14 @@ const styles = StyleSheet.create({
     width: '60%'
   },
   logo: {
-    height: '30%',
+    height: '50%',
     width,
     justifyContent: 'center',
     alignItems: 'center'
   },
   loginText: {
-    color: 'gray',
-    fontSize: 14,
+    color: 'white',
+    fontSize: 15,
     marginTop: '3%'
   },
   googleSignIn: {
@@ -198,7 +201,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     marginTop: '80%',
-    shadowColor: '#A1A1F',
+    shadowColor: '#1A1A1F',
     shadowOffset: { width: 0, height: 1},
     shadowOpacity: 0.8,
     shadowRadius: 2,
