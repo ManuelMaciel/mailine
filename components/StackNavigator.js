@@ -5,6 +5,7 @@ import { View, Text } from 'react-native'
 // import { createStackNavigator } from '@react-navigation/stack'
 // Screens
 import LoginScreen from '../screens/LoginScreen';
+import EmailScreen from '../screens/EmailScreen';
 
 // const Stack = createStackNavigator();
 
@@ -12,7 +13,7 @@ import LoginScreen from '../screens/LoginScreen';
 const StackNavigator = () => {
   return (
     <View>
-      <LoginScreen />
+      <EmailScreen />
     </View>
   )
 }

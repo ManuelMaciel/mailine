@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   Text,
@@ -14,7 +14,6 @@ import {
   Animated,
   Easing,
   StatusBar,
-  Easing,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Clipboard from "@react-native-clipboard/clipboard";
@@ -161,7 +160,7 @@ const EmailScreen = () => {
     <TouchableOpacity
       style={styles.emailTouch}
       onPress={() => onPressProps(item.email, item.time)}
-      onLongPress={() => OnLongPressEmail(item.email)}
+      onLongPress={() => onLongPressEmail(item.email)}
     >
       <View style={styles.emailMainView}>
         <View
@@ -301,8 +300,8 @@ const EmailScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    height: Dev_Height,
-    width: Dev_Width,
+    height,
+    width,
     backgroundColor: "#1A1A1F",
   },
   mainEmail: {
