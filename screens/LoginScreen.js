@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, SafeAreaView, TouchableOpacity, Dimensions, StyleSheet, Image, StatusBar, Touchable } from 'react-native'
 import { AntDesign } from '@expo/vector-icons';
 import NetInfo from "@react-native-community/netinfo";
@@ -12,8 +12,8 @@ const LoginScreen = () => {
 
   const [ buttonText, setButtonText ] = useState('')
 
-  const onSignIn = async () => {
-    await NetInfo.fetch().then(state => {
+  const onSignIn = () => {
+    NetInfo.fetch().then(state => {
       if (state.isConnected == true){
         setButtonText('Empecemos!');
         // navigation to email
@@ -23,6 +23,26 @@ const LoginScreen = () => {
     })
   }
 
+  const initialTest = () => {
+    NewInfo.fetch().then(state => {
+      if(state.isConnected == true){
+        RBSheet.open()
+      } else {
+        setButtonText('Se necesita Internet')
+      }
+    })
+  }
+
+  const onPressLogo = () => {
+    RBSheet.open();
+  }
+
+  useEffect(() => {
+    initialTest();
+    return () => {
+      console.log('clean')
+    }
+  }, [])
 
   return (
     <SafeAreaView style={styles.container}>
@@ -56,7 +76,7 @@ const LoginScreen = () => {
           <View style={styles.mainViewSwipe}>
             <Image 
               resizeMode='contain'
-              source={{ uri: '../assets/hacker.png'}}
+              source={require("../assets/hacker.png")}
               style={styles.imageStyle}
             />
             <View style={styles.secondaryViewSwipe}>
@@ -68,7 +88,7 @@ const LoginScreen = () => {
           <View style={styles.mainViewSwipe}>
             <Image 
               resizeMode='contain'
-              source={{ uri: '../assets/spam.png'}}
+              source={require("../assets/spam.png")}
               style={styles.imageStyle}
             />
             <View style={styles.secondaryViewSwipe}>
@@ -80,7 +100,7 @@ const LoginScreen = () => {
           <View style={styles.mainViewSwipe}>
             <Image 
               resizeMode='contain'
-              source={{ uri: '../assets/privacy.png'}}
+              source={require("../assets/privacy.png")}
               style={styles.imageStyle}
             />
             <View style={styles.secondaryViewSwipe}>
@@ -92,7 +112,7 @@ const LoginScreen = () => {
           <View style={styles.mainViewSwipe}>
             <Image 
               resizeMode='contain'
-              source={{ uri: '../assets/privacy.png'}}
+              source={require("../assets/wayw.png")}
               style={styles.imageStyle}
             />
             <View style={{ justifyContent: 'center', alignItems: 'center', height: '100%', width: '60%'}}>
@@ -104,6 +124,18 @@ const LoginScreen = () => {
           </View>
         </SwipeRender>
       </RBSheet>
+
+      <TouchableOpacity style={styles.logo} onPress={onPressLogo}>
+        <Image source={require("../assets/logo.png")} style={styles.imageStyleLogo} />
+        <Text style={styles.loginText}>Inicie sesión en su cuenta para comenzar</Text>
+      </TouchableOpacity>
+
+      <View style={styles.googleSignIn}>
+        <TouchableOpacity style={styles.googleSignInButton} onPress={onSignIn}>
+          <AntDesign name='heart' size={20} color='#fff' style={{ marginLeft: '5%'}} />
+          <Text style={styles.googleSignInText}>{buttonText}</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   )
 }
@@ -135,6 +167,67 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginTop: '5%',
     textAlign: 'center'
+  },
+  imageStyleLogo: {
+    height: '30%',
+    width: '60%'
+  },
+  logo: {
+    height: '30%',
+    width,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  loginText: {
+    color: 'gray',
+    fontSize: 14,
+    marginTop: '3%'
+  },
+  googleSignIn: {
+    height: '70%',
+    width,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  googleSignInButton: {
+    height: '10%',
+    width: '80%',
+    backgroundColor: '#e46565',
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginTop: '80%',
+    shadowColor: '#A1A1F',
+    shadowOffset: { width: 0, height: 1},
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5
+  },
+  googleSignInText: {
+    fontSize: 14,
+    color: '#fff',
+    marginLeft: '5%'
+  }, 
+  secondaryViewSwipe: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height,
+    width: '50%'
+  },
+  startButton: {
+    shadowColor: '#1A1A1F',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
+    height: '20%',
+    width: '80%',
+    backgroundColor: '#e46565',
+    borderRadius: 10,
+    marginTop: '10%',
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 })
 
