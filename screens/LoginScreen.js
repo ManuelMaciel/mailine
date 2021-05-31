@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, SafeAreaView, TouchableOpacity, Dimensions, StyleSheet, Image, StatusBar } from 'react-native'
+import { View, Text, SafeAreaView, TouchableOpacity, Dimensions, StyleSheet, Image, StatusBar, Touchable } from 'react-native'
 import { AntDesign } from '@expo/vector-icons';
 import NetInfo from "@react-native-community/netinfo";
 import RBSheet from "react-native-raw-bottom-sheet";
@@ -52,16 +52,53 @@ const LoginScreen = () => {
           autoplayTimeout={3}
           bounces={true}
         >
+          {/* 1 */}
           <View style={styles.mainViewSwipe}>
             <Image 
               resizeMode='contain'
-              source={{ uri: '../assets/swipe.png'}}
+              source={{ uri: '../assets/hacker.png'}}
+              style={styles.imageStyle}
+            />
+            <View style={styles.secondaryViewSwipe}>
+              <Text style={styles.textHeader}>Proteja su privacidad!</Text>
+              <Text style={styles.subTitleHeader}>Protégete de los Hackers. Sobreviva lo suficiente como para no estar en riesgo potencial de ser hackeado.</Text>
+            </View>
+          </View>
+          {/* 2 */}
+          <View style={styles.mainViewSwipe}>
+            <Image 
+              resizeMode='contain'
+              source={{ uri: '../assets/spam.png'}}
+              style={styles.imageStyle}
+            />
+            <View style={styles.secondaryViewSwipe}>
+              <Text style={styles.textHeader}>Dile no al spam!</Text>
+              <Text style={styles.subTitleHeader}>El identificador de correos es tu cielo seguro contra el spam y los correos basura que llenan tu bandeja de entrada.</Text>
+            </View>
+          </View>
+          {/* 3 */}
+          <View style={styles.mainViewSwipe}>
+            <Image 
+              resizeMode='contain'
+              source={{ uri: '../assets/privacy.png'}}
+              style={styles.imageStyle}
+            />
+            <View style={styles.secondaryViewSwipe}>
+              <Text style={styles.textHeader}>Eres anónimo!</Text>
+              <Text style={styles.subTitleHeader}>Hacer un correo electrónico temporal no requiere ningún tipo de información, mantenga el anonimato.</Text>
+            </View>
+          </View>
+          {/* 4 */}
+          <View style={styles.mainViewSwipe}>
+            <Image 
+              resizeMode='contain'
+              source={{ uri: '../assets/privacy.png'}}
               style={styles.imageStyle}
             />
             <View style={{ justifyContent: 'center', alignItems: 'center', height: '100%', width: '60%'}}>
-              <Text style={styles.textHeader}>¿A qué esperas?</Text>
-              <TouchableOpacity onPress={onSignIn} style={styles.letStart}>
-
+              <Text style={styles.textHeader}>Qué estás esperando?</Text>
+              <TouchableOpacity style={styles.startButton} onPress={onSignIn}>
+                <Text style={{fontSize: 16, color: '#FFF'}}>Empecemos</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -92,8 +129,13 @@ const styles = StyleSheet.create({
     color: '#F1F1F1',
     fontSize: 17,
     textAlign: 'center'
+  },
+  subTitleHeader: {
+    color: 'gray',
+    fontSize: 15,
+    marginTop: '5%',
+    textAlign: 'center'
   }
-  
 })
 
 export default LoginScreen
