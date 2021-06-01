@@ -155,8 +155,8 @@ const EmailMainScreen = () => {
 const styles = StyleSheet.create({
   container:{
     flex:1,
-    height:Dev_Height,
-    width:Dev_Width,
+    height,
+    width,
     backgroundColor:"#1A1A1F",
   },
   mainView:{
