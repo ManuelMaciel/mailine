@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -14,26 +14,40 @@ import {
   Animated,
   Easing,
   StatusBar,
+  FlatList,
+  LayoutAnimation
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Clipboard from "@react-native-clipboard/clipboard";
 import { AntDesign } from "@expo/vector-icons";
-import SwipeableFlatList from "react-native-swipeable-list";
+// import {SwipeableFlatList} from 'react-native-swipeable-flat-list';
+// import SwipeableFlatList from 'react-native-swipeable-flat-list-2'
 import RBSheet from "react-native-raw-bottom-sheet";
 import moment from "moment";
+import {
+  SwipeableFlatList,
+  SwipeableQuickActionButton,
+  SwipeableQuickActions,
+} from 'react-native-swipe-list';
 
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
 const EmailScreen = ({ navigation }) => {
+
   const [data, setData] = useState({
     loading: true,
     email: '',
     value: 0,
     verticalVal: new Animated.Value(0)
-  })
+  });
+
   const [ info, setInfo ] = useState([])
+
   const preventCharge = useRef(0)
+
+  const render = useRef(0)
+  
   // const [loading, setLoading] = useState(true);
   // const [email, setEmail] = useState();
   // const [data, setData] = useState([]);
@@ -53,90 +67,13 @@ const EmailScreen = ({ navigation }) => {
     "#F9A826",
   ];
 
-  const onPressNew = () => {
-    fetch("https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=1")
-      .then((response) => response.json())
-      .then(json => {
-        setData({...data, email: json[0], loading: true})
-        console.log()
-        listformating()
-        preventCharge.current = preventCharge.current + 1
-      })
-      .catch((error) => console.error(error));
-  };
-
-  const listformating = () => {
-    const test = {
-      "email": data.email,
-      "time": moment().add(15, "m"),
-      "color": colors[getRndInteger(0, 6)],
-    };
-    setData({...data, loading: false, value: info.length})
-    setInfo({test})
-    setObjectValue();
-    getMyObject();
-  };
-
-  const getRndInteger = (min, max) => {
-    return Math.floor(Math.random() * (max - min)) + min;
-  };
-
   const onLongPressEmail = (mail) => {
     Clipboard.setString(mail);
     ToastAndroid.show(`Email copiado ${ToastAndroid.LONG}`);
   };
 
-  const onPressProps = (email, endTime) => {
-    const currentTime = moment();
-    if (moment(endTime).isAfter(currentTime)) {
-      navigation.navigate('EmailNow', {"email": email})
-    } else {
-      refRBSheet.open();
-    }
-  };
-
-  const deleteItemById = (email) => () => {
-    const filteredData = info.filter((item) => item.email !== email);
-    console.log(`filt ${filteredData}`)
-    setInfo({filteredData})
-    try {
-      const json = JSON.stringify(filteredData);
-      AsyncStorage.setItem("Emails", json);
-      getMyObject();
-      setData({...data, value: info.length })
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const setObjectValue = async () => {
-    try {
-      const json = JSON.stringify(data.data);
-      await AsyncStorage.setItem("Emails", json);
-      setData({...data, value: info.length })
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const getMyObject = async () => {
-    try {
-      const json = await AsyncStorage.getItem("Emails");
-      if (json) {
-        const datajson = JSON.parse(json);
-        setInfo({datajson})
-        setData({...data , email: json[0], loading: true, value: info.length })
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
+  // se ejecuta una sola vez al renderizar el componente
   useEffect(() => {
-    console.log(preventCharge.current)
-    if(preventCharge.current === 0) return;
-    console.log(data)
-    console.log(info)
     getMyObject();
     Animated.timing(data.verticalVal, {
       toValue: 10,
@@ -164,42 +101,241 @@ const EmailScreen = ({ navigation }) => {
     return () => {
       console.log("clean");
     };
-  }, [preventCharge.current]);
+  }, []);
 
-  const renderItem = ({ item }) => {
-    <TouchableOpacity
-      style={styles.emailTouch}
-      onPress={() => onPressProps(item.email, item.time)}
-      onLongPress={() => onLongPressEmail(item.email)}
-    >
-      <View style={styles.emailMainView}>
-        <View
-          style={{
-            height: "100%",
-            width: "3%",
-            backgroundColor: item.color,
-            borderRadius: 45,
-          }}
-        />
-        <View style={styles.emailContainer}>
-          <Text
-            numberOfLines={1}
-            adjustsFontSizeToFit={true}
-            style={styles.emailText}
-          >
-            {item.email}
-          </Text>
-          <Text
-            numberOfLines={1}
-            adjustsFontSizeToFit={true}
-            style={styles.timestampText}
-          >
-            {moment(item.time).format("dddd, MMMM Do YYYY")}
-          </Text>
-        </View>
-      </View>
-    </TouchableOpacity>;
+  const getMyObject = async () => {
+    try {
+      const json = await AsyncStorage.getItem("Emails");
+      // console.log(json)
+      if (json) {
+        const datajson = JSON.parse(json);
+        setInfo(datajson)
+        setData({...data , email: json[0], loading: true, value: info.length })
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
+
+  const onPressNew = async () => {
+    const url = 'https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=1'
+    const api = await fetch(url);
+    const mail = await api.json();
+    console.log(`desde la api: ${mail[0]}`)
+    setData({ ...data, loading: true, email: mail[0] });
+    const list = {
+      "email": mail,
+      "time": moment().add(15, "m"),
+      "color": colors[getRndInteger(0, 6)],
+    };
+    setInfo([list, ...info])
+    setData({...data, loading: false, value: info.length })
+    console.log('finish 1')
+
+    render.current = render.current + 1
+    // setObjectValue();
+    // getMyObject();
+  };
+
+  useEffect(() => {
+    if(preventCharge.current === 0) return;
+    // console.log('data in data effect')
+    // console.log(data)
+    // console.log('info in data effect')
+    // console.log(info)
+  }, [data, info])
+
+  useEffect(() => {
+    if(preventCharge.current === 0) return;
+    setObjectValue();
+    getMyObject();
+  }, [render.current])
+
+
+
+  const updateState = () => {
+    preventCharge.current = preventCharge.current + 1
+    console.log(`prevent ${preventCharge.current}`)
+    onPressNew()
+  }
+
+  // const onPressNew = async () => {
+  //   const url = 'https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=1'
+  //   const api = await fetch(url);
+  //   const mail = await api.json();
+  //   console.log(`desde la api: ${mail[0]}`)
+  //   setData({ ...data, loading: true, email: mail[0] });
+  //   const list = {
+  //     "email": mail,
+  //     "time": moment().add(15, "m"),
+  //     "color": colors[getRndInteger(0, 6)],
+  //   };
+  //   setInfo([...info, list ])
+  //   setData({...data, loading: false, value: info.length })
+  //   console.log('finish 1')
+  //   render.current = render.current + 1
+  //   setObjectValue();
+  //   getMyObject();
+  // };
+
+  // useEffect(() => {
+  //   if(preventCharge.current === 0){
+  //     console.log('no se ejecuto la primera vez')
+  //     return;
+  //   } else {
+  //     onPressNew()
+  //     console.log('data from useEffect')
+  //     console.log(data)
+  //     console.log('list from useEffect')
+  //     console.log(info)
+  //   }
+  // }, [preventCharge.current])
+
+  // useEffect(() => {
+  //   console.log('data from data effect')
+  //   console.log(data)
+  //   console.log(`info from data effect`)
+  //   console.log(info)
+  // }, [data])
+
+  // useEffect(() => {
+  //   if(render.current === 0) return;
+    
+  // }, [render.current])
+  
+  // useEffect(() => {
+  //   if(render.current === 0){
+  //     console.log('no se ejecuto la primera vez')
+  //     return;
+  //   } else {
+  //     setObjectValue();
+  //     getMyObject();
+  //     console.log('data from render effect')
+  //     console.log(data)
+  //     console.log(`info from render effect`)
+  //     console.log(info)
+      
+  //   }
+  // }, [render.current])
+  
+
+  // const listformating = () => {
+    
+  // };
+
+
+  const setObjectValue = async () => {
+    try {
+      const json = JSON.stringify(info);
+      console.log(`json`)
+      console.log(json)
+      await AsyncStorage.setItem("Emails", json);
+      setData({...data, value: info.length })
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // const getMyObject = async () => {
+  //   try {
+  //     const json = await AsyncStorage.getItem("Emails");
+  //     if (json) {
+  //       const datajson = JSON.parse(json);
+  //       setInfo(datajson)
+  //       setData({...data , email: json[0], loading: true, value: info.length })
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+  const getRndInteger = (min, max) => {
+    return Math.floor(Math.random() * (max - min)) + min;
+  };
+
+  // const onLongPressEmail = (mail) => {
+  //   Clipboard.setString(mail);
+  //   ToastAndroid.show(`Email copiado ${ToastAndroid.LONG}`);
+  // };
+
+  const onPressProps = (email, endTime) => {
+    const currentTime = moment();
+    if (moment(endTime).isAfter(currentTime)) {
+      navigation.navigate('EmailNow', {"email": email})
+    } else {
+      refRBSheet.open();
+    }
+  };
+
+  const deleteItemById = (email) => {
+    const filteredData = info.filter(item => item.email !== email);
+    console.log(`filt`)
+    console.log(filteredData)
+    // setInfo({filteredData})
+    // try {
+    //   const json = JSON.stringify(filteredData);
+    //   AsyncStorage.setItem("Emails", json);
+    //   getMyObject();
+    //   setData({...data, value: info.length })
+    // } catch (error) {
+    //   console.error(error);
+    // }    
+  };
+
+  
+
+  const RenderItem = ({ item }) => {
+    // console.log('from render item')
+    // console.log(item)
+    return (
+      <>
+      
+      <TouchableOpacity
+        style={styles.emailTouch}
+        onPress={() => onPressProps(item.item.email, item.item.time)}
+        onLongPress={() => onLongPressEmail(item.item.email)}
+      >
+        <View style={styles.emailMainView}>
+          <View
+            style={{
+              height: "100%",
+              width: "3%",
+              backgroundColor: item.item.color,
+              borderRadius: 45,
+            }}
+          />
+          <View style={styles.emailContainer}>
+            <Text
+              numberOfLines={1}
+              adjustsFontSizeToFit={true}
+              style={styles.emailText}
+            >
+              {item.item.email}
+            </Text>
+            <Text
+              numberOfLines={1}
+              adjustsFontSizeToFit={true}
+              style={styles.timestampText}
+            >
+              {moment(item.item.time).format("dddd, MMMM Do YYYY")}
+            </Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+        {/* <TouchableOpacity style={styles.deleteButton} onPress={deleteItemById(item.email)}>
+        <AntDesign name="close" size={24} color="white"/>
+      </TouchableOpacity> */}
+      </>
+    )
+  };
+
+  const RenderItemRigth = ({ item }) => {
+    return (
+      <TouchableOpacity style={styles.deleteButton} onPress={() => deleteItemById(item.item.email)}>
+        <AntDesign name="close" size={24} color={item.item.color}/>
+      </TouchableOpacity>
+    )
+  }
 
   const renderSeparator = () => (
     <View
@@ -259,7 +395,7 @@ const EmailScreen = ({ navigation }) => {
             <Text style={styles.hiyouStyle}>Hola tú.</Text>
             <TouchableOpacity
               style={styles.newEmail}
-              onPress={onPressNew}
+              onPress={updateState}
             >
               <Text style={styles.newEmail_text}>Nuevo correo electrónico</Text>
             </TouchableOpacity>
@@ -270,14 +406,12 @@ const EmailScreen = ({ navigation }) => {
         <View style={styles.listMainView}>
           <SwipeableFlatList
             data={info}
-            renderItem={renderItem}
-            renderRight={({ item }) => (
-              <TouchableOpacity
-                style={styles.deleteButton}
-                onPress={deleteItemById(item.email)}
-              >
-                <Icon name="close" size={24} color="#FFF" />
-              </TouchableOpacity>
+            renderItem={(item) => <RenderItem item={item}/> }
+            // renderRight={(item) => <RenderItemRigth item={item}/> }
+            renderRightActions={(item) => (
+              <SwipeableQuickActions>
+                <RenderItemRigth item={item} />
+              </SwipeableQuickActions>
             )}
             backgroundColor={"#1A1A1F"}
             itemBackgroundColor={"#1A1A1F"}
@@ -368,7 +502,9 @@ const styles = StyleSheet.create({
     width: 90,
     height: 90,
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: 'center',
+    // position: 'absolute'
+
   },
   emailTouch: {
     height: 90,
