@@ -6,6 +6,7 @@ import { View, Text } from 'react-native'
 // Screens
 import LoginScreen from '../screens/LoginScreen';
 import EmailScreen from '../screens/EmailScreen';
+import EmailMainScreen from '../screens/EmailMainScreen';
 
 // const Stack = createStackNavigator();
 
