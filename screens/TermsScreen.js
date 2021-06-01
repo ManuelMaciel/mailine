@@ -16,7 +16,7 @@ const height = Dimensions.get('window').height
 const width = Dimensions.get('window').width
 
 
-const TermsScreen = () => {
+const TermsScreen = ({ navigation }) => {
 
   const onBack = () => {
     navigation.goBack();
@@ -34,7 +34,13 @@ const TermsScreen = () => {
 
         <View style={styles.textMainView}>
           <ScrollView>
-            <Text style={styles.textStyle}>{'Al utilizar nuestros servicios, usted acepta nuestra política de privacidad, que describe cómo almacenamos la información. \Su dirección de correo electrónico temporal es completamente anónima. Su dirección de correo electrónico se autodestruye automáticamente a medida que transcurre el tiempo.\NMailine no permite a los usuarios añadir imágenes en los correos debido a las siguientes razones: \1. Robo en línea 1. Robo en línea 2. Uso indebido de la aplicación para otros fines. La dirección de correo electrónico temporal que puede obtener en Mailine puede servir para un gran número de propósitos. Su función principal es la de proteger su confidencialidad cuando navega por Internet y Made Only para fines de verificación.'}</Text>
+            <Text style={styles.textStyle}>{'Al utilizar nuestros servicios, usted acepta nuestra política de privacidad, que describe cómo almacenamos la información.'}</Text>
+            <Text style={styles.textStyle}>{'Su dirección de correo electrónico temporal es completamente anónima. Su dirección de correo electrónico se autodestruye automáticamente a medida que transcurre el tiempo.'}</Text>
+            <Text style={styles.textStyle}>{'Mailine no permite a los usuarios añadir imágenes en los correos debido a las siguientes razones:'}</Text>
+            <Text style={styles.textStyle}>{'1. Robo en línea'}</Text>
+            <Text style={styles.textStyle}>{'2. Uso indebido de la aplicación para otros fines.'}</Text>
+            <Text style={styles.textStyle}>{'La dirección de correo electrónico temporal que puede obtener en temp mail puede servir para un gran número de propósitos.'}</Text>
+            <Text style={styles.textStyle}>{'Su función principal es la de proteger su confidencialidad cuando navega por Internet y Made Only para fines de verificación.'}</Text>
           </ScrollView>
         </View>        
 

@@ -20,7 +20,7 @@ import { Entypo } from '@expo/vector-icons';
 const height = Dimensions.get('window').height
 const width = Dimensions.get('window').width
 
-const EmailMainScreen = ({ navigation }) => {
+const EmailMainScreen = ({ navigation, route }) => {
 
   const [ data, setData ] = useState([]) 
   const [ loading, setLoading ] = useState(true) 

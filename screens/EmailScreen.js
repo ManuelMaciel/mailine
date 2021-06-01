@@ -26,13 +26,21 @@ const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
 const EmailScreen = ({ navigation }) => {
-  const [loading, setLoading] = useState(true);
-  const [email, setEmail] = useState("");
-  const [data, setData] = useState([]);
-  const [value, setValue] = useState(0);
-  const [modalVisible, setModalVisible] = useState(true);
-  const [copyEmail, setCopyEmail] = useState("");
-  const [verticalVal, setVerticalVal] = useState(new Animated.Value(0));
+  const [data, setData] = useState({
+    loading: true,
+    email: '',
+    value: 0,
+    verticalVal: new Animated.Value(0)
+  })
+  const [ info, setInfo ] = useState([])
+  const preventCharge = useRef(0)
+  // const [loading, setLoading] = useState(true);
+  // const [email, setEmail] = useState();
+  // const [data, setData] = useState([]);
+  // const [value, setValue] = useState(0);
+  // const [modalVisible, setModalVisible] = useState(true);
+  // const [copyEmail, setCopyEmail] = useState("");
+  // const [verticalVal, setVerticalVal] = useState(new Animated.Value(0));
 
   const refRBSheet = useRef();
 
@@ -44,6 +52,30 @@ const EmailScreen = ({ navigation }) => {
     "#F9A826",
     "#F9A826",
   ];
+
+  const onPressNew = () => {
+    fetch("https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=1")
+      .then((response) => response.json())
+      .then(json => {
+        setData({...data, email: json[0], loading: true})
+        console.log()
+        listformating()
+        preventCharge.current = preventCharge.current + 1
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const listformating = () => {
+    const test = {
+      "email": data.email,
+      "time": moment().add(15, "m"),
+      "color": colors[getRndInteger(0, 6)],
+    };
+    setData({...data, loading: false, value: info.length})
+    setInfo({test})
+    setObjectValue();
+    getMyObject();
+  };
 
   const getRndInteger = (min, max) => {
     return Math.floor(Math.random() * (max - min)) + min;
@@ -64,13 +96,14 @@ const EmailScreen = ({ navigation }) => {
   };
 
   const deleteItemById = (email) => () => {
-    const filteredData = data.filter((item) => item.email !== email);
-    setData([...data, { data: filteredData }]);
+    const filteredData = info.filter((item) => item.email !== email);
+    console.log(`filt ${filteredData}`)
+    setInfo({filteredData})
     try {
       const json = JSON.stringify(filteredData);
       AsyncStorage.setItem("Emails", json);
       getMyObject();
-      setValue(data.lenght);
+      setData({...data, value: info.length })
     } catch (error) {
       console.error(error);
     }
@@ -78,83 +111,60 @@ const EmailScreen = ({ navigation }) => {
 
   const setObjectValue = async () => {
     try {
-      const json = JSON.stringify(data);
+      const json = JSON.stringify(data.data);
       await AsyncStorage.setItem("Emails", json);
-      setValue(data.lenght);
+      setData({...data, value: info.length })
     } catch (error) {
       console.error(error);
     }
-    console.log(done);
   };
 
   const getMyObject = async () => {
     try {
       const json = await AsyncStorage.getItem("Emails");
       if (json) {
-        const data = JSON.parse(json);
-        setData(data);
-        setEmail(json[0]);
-        setLoading(true);
-        setValue(data.lenght);
+        const datajson = JSON.parse(json);
+        setInfo({datajson})
+        setData({...data , email: json[0], loading: true, value: info.length })
       }
     } catch (error) {
       console.error(error);
     }
   };
 
-  const onPressNew = () => {
-    fetch("https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=1")
-      .then((response) => response.json())
-      .then((json) => {
-        setEmail(json[0]);
-        setLoading(true);
-        listformating();
-      })
-      .catch((error) => console.error(error));
-  };
-
-  const listformating = () => {
-    const test = {
-      email: email,
-      time: moment().add(15, "m"),
-      color: colors[getRndInteger(0, 6)],
-    };
-    setData(test);
-    setLoading(false);
-    setObjectValue();
-    getMyObject();
-    setValue(data.length);
-  };
-
   useEffect(() => {
+    console.log(preventCharge.current)
+    if(preventCharge.current === 0) return;
+    console.log(data)
+    console.log(info)
     getMyObject();
-    Animated.timing(verticalVal, {
+    Animated.timing(data.verticalVal, {
       toValue: 10,
       duration: 1000,
       useNativeDriver: true,
       easing: Easing.inOut(Easing.quad),
     }).start();
-    verticalVal.addListener(({ value }) => {
+    data.verticalVal.addListener(({ value }) => {
       if (value === 10) {
-        Animated.timing(verticalVal, {
+        Animated.timing(data.verticalVal, {
           toValue: 0,
           duration: 1000,
           useNativeDriver: true,
           easing: Easing.inOut(Easing.quad),
         }).start();
       } else {
-        Animated.timing(verticalVal, {
+        Animated.timing(data.verticalVal, {
           toValue: 10,
           duration: 1000,
           useNativeDriver: true,
           easing: Easing.inOut(Easing.quad),
         }).start();
-      }
+      } 
     });
     return () => {
       console.log("clean");
     };
-  }, []);
+  }, [preventCharge.current]);
 
   const renderItem = ({ item }) => {
     <TouchableOpacity
@@ -236,7 +246,7 @@ const EmailScreen = ({ navigation }) => {
           <Animated.View
             style={{
               ...styles.imageView,
-              transform: [{ translateY: verticalVal }],
+              transform: [{ translateY: data.verticalVal }],
             }}
           >
             <Image
@@ -256,10 +266,10 @@ const EmailScreen = ({ navigation }) => {
           </View>
         </View>
       </View>
-      {value != 0 ? (
+      {data.value != 0 ? (
         <View style={styles.listMainView}>
           <SwipeableFlatList
-            data={data}
+            data={info}
             renderItem={renderItem}
             renderRight={({ item }) => (
               <TouchableOpacity
@@ -273,7 +283,7 @@ const EmailScreen = ({ navigation }) => {
             itemBackgroundColor={"#1A1A1F"}
             ItemSeparatorComponent={renderSeparator}
             bounces={true}
-            refreshing={loading}
+            refreshing={data.loading}
             keyExtractor={(item, index) => "key" + index}
           />
         </View>
@@ -347,6 +357,7 @@ const styles = StyleSheet.create({
   newEmail_text: {
     fontSize: 13,
     color: "#FFF",
+    textAlign: 'center'
   },
   listMainView: {
     height: "70%",

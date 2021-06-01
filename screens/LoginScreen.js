@@ -127,7 +127,6 @@ const LoginScreen = ({ navigation }) => {
           </View>
         </SwipeRender>
       </RBSheet>
-
       <TouchableOpacity style={styles.logo} onPress={onPressLogo}>
         <Image source={require("../assets/logo.png")} style={styles.imageStyleLogo} />
         <Text style={styles.loginText}>Bienvenido</Text>
@@ -139,6 +138,7 @@ const LoginScreen = ({ navigation }) => {
           <Text style={styles.googleSignInText}>{buttonText}</Text>
         </TouchableOpacity>
       </View>
+
     </SafeAreaView>
   )
 }
