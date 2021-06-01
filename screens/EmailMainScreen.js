@@ -20,7 +20,7 @@ import { Entypo } from '@expo/vector-icons';
 const height = Dimensions.get('window').height
 const width = Dimensions.get('window').width
 
-const EmailMainScreen = () => {
+const EmailMainScreen = ({ navigation }) => {
 
   const [ data, setData ] = useState([]) 
   const [ loading, setLoading ] = useState(true) 
@@ -54,7 +54,7 @@ const EmailMainScreen = () => {
   }
 
   const OnPressNew = () => {
-    fetch("https://www.1secmail.com/api/v1/?action=getMessages&login="+this.state.email_name+"&domain="+this.state.email_domain)
+    fetch("https://www.1secmail.com/api/v1/?action=getMessages&login="+emailName+"&domain="+emailDomain)
       .then((response) => response.json())
       .then((json) => {
         setLoading(true)
@@ -83,12 +83,12 @@ const EmailMainScreen = () => {
     setValue(data.length)
   }
 
-  const onPressProps = (props) => {
-    // this.props.navigation.navigate("Content",{
-    //   "email_id":props,
-    //   "email_domain":this.state.email_domain,
-    //   "email_name":this.state.email_name
-    // })
+  const onPressProps = (id) => {
+    navigation.navigate("Content",{
+      "emailId":id,
+      "emailDomain": emailDomain,
+      "emailName": emailName
+    })
   }
 
   const renderItem = ({ item }) => (
@@ -100,12 +100,12 @@ const EmailMainScreen = () => {
               numberOfLines={1} 
               adjustsFontSizeToFit={true} 
               style={{fontSize:15,color:item.color}}> 
-                {item.email_from}
+                {item.emailFrom}
               </Text>
             </View>
         <View style={{height:"50%",width:"90%"}}>
-          <Text style={styles.emailSubjectText} numberOfLines={2} >{item.email_subject}</Text>
-          <Text style={styles.emailDateText} numberOfLines={1} adjustsFontSizeToFit={true}>{item.email_date}</Text>
+          <Text style={styles.emailSubjectText} numberOfLines={2} >{item.emailSubject}</Text>
+          <Text style={styles.emailDateText} numberOfLines={1} adjustsFontSizeToFit={true}>{item.emailDate}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -115,7 +115,6 @@ const EmailMainScreen = () => {
     <View
       style={{
         height: 10,
-        
       }}
     />
   );
@@ -126,7 +125,7 @@ const EmailMainScreen = () => {
           <View style={{...styles.flastlistView,justifyContent:"center",alignItems:"center"}}>
             <Image source={require('../assets/404.png')} resizeMode="contain" style={styles.image}/>
              <View style={styles.textContainer}>
-               <Text style={styles.text}> No Mails Found </Text>
+               <Text style={styles.text}> No se han encontrado correos </Text>
              </View>
           </View>
       </SafeAreaView>

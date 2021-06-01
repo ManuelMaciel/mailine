@@ -8,7 +8,7 @@ import SwipeRender from "react-native-swipe-render";
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }) => {
 
   const [ buttonText, setButtonText ] = useState('')
 
@@ -18,7 +18,7 @@ const LoginScreen = () => {
     NetInfo.fetch().then(state => {
       if (state.isConnected == true){
         setButtonText('Empecemos!');
-        // navigation to email
+        navigation.navigate("Email")
       } else {
         setButtonText('Se necesita Internet')
       }

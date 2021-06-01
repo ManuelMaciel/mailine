@@ -25,7 +25,7 @@ import moment from "moment";
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
-const EmailScreen = () => {
+const EmailScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
   const [email, setEmail] = useState("");
   const [data, setData] = useState([]);
@@ -57,7 +57,7 @@ const EmailScreen = () => {
   const onPressProps = (email, endTime) => {
     const currentTime = moment();
     if (moment(endTime).isAfter(currentTime)) {
-      // navigation.navigate('emailnow', {"email": email})
+      navigation.navigate('EmailNow', {"email": email})
     } else {
       refRBSheet.open();
     }
@@ -78,7 +78,7 @@ const EmailScreen = () => {
 
   const setObjectValue = async () => {
     try {
-      constjson = JSON.stringify(state.data);
+      const json = JSON.stringify(data);
       await AsyncStorage.setItem("Emails", json);
       setValue(data.lenght);
     } catch (error) {

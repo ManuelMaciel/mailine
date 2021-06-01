@@ -13,7 +13,7 @@ import {
 } from "react-native"
 import SnackBar from 'react-native-snackbar-component'
 
-const ContentScreen = () => {
+const ContentScreen = ({ navigation }) => {
 
   const [ data, setData ] = useState('')
   const [ loading, setLoading ] = useState(true)
@@ -30,8 +30,8 @@ const ContentScreen = () => {
   }, []);
 
   const seeMessage = () => {
-    // this.props.navigation.navigate("Terms")
-    // this.setState({ visiblity : false })
+    navigation.navigate("Terms")
+    setVisiblity(false)
   };
 
   const seeMessageText = () => {
