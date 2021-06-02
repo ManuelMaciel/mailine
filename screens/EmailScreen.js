@@ -294,10 +294,10 @@ const EmailScreen = ({ navigation, route }) => {
   //   ToastAndroid.show(`Email copiado ${ToastAndroid.LONG}`);
   // };
 
-  const onPressProps = (email, endTime) => {
+  const onPressProps = (email, endTime, color) => {
     const currentTime = moment();
     if (moment(endTime).isAfter(currentTime)) {
-      navigation.navigate('EmailNow', {"email": email})
+      navigation.navigate('EmailNow', {"email": email, "color": color})
     } else {
       refRBSheet.current.open();
     }
@@ -328,7 +328,7 @@ const EmailScreen = ({ navigation, route }) => {
       
       <TouchableOpacity
         style={styles.emailTouch}
-        onPress={() => onPressProps(item.item.email, item.item.time)}
+        onPress={() => onPressProps(item.item.email, item.item.time, item.item.color)}
         onLongPress={() => onLongPressEmail(item.item.email)}
       >
         <View style={styles.emailMainView}>

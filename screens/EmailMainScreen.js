@@ -23,7 +23,6 @@ const width = Dimensions.get('window').width
 
 const EmailMainScreen = ({ navigation, route }) => {
 
-  // const { emailParams } = route.params;
   // console.log(route.params.email[0])
 
   const [ data, setData ] = useState([]) 
@@ -73,41 +72,46 @@ const EmailMainScreen = ({ navigation, route }) => {
         console.log(emailDomain)
         console.log(json)
         setLoading(true)
-        setData([])
+        setData(json)
         // json.map(singleMail => {
-          // setEmailFrom(singleMail["from"])
-          // setEmailSubject(singleMail["subject"])
-          // setEmailDate(singleMail["date"])
-          // setEmailId(singleMail["id"])
-          // const test = { 
-          //   "emailFrom": singleMail["from"],
-          //   "emailSubject": singleMail["subject"],
-          //   "emailDate": singleMail["date"],
-          //   "color":colors[getRndInteger(0,6)],
-          //   "id": singleMail["id"]
-          // } 
-          // setData([test, ...data])
-          // render.current = render.current + 1
-          // setValue(data.length)
-          // listformating()
-          // listformating()
-          // console.log(singleMail["from"])
-          // console.log(singleMail["subject"])
-          // console.log(singleMail["date"])
-          // console.log(singleMail["id"])
+        //   setEmailFrom(singleMail["from"])
+        //   setEmailSubject(singleMail["subject"])
+        //   setEmailDate(singleMail["date"])
+        //   setEmailId(singleMail["id"])
+        //   render.current = render.current + 1
+        //   listformating()
+        //   console.log(singleMail["from"])
+        //   console.log(singleMail["subject"])
+        //   console.log(singleMail["date"])
+        //   console.log(singleMail["id"])
         // })
-        json.forEach(function(entry) {
-          const test = { 
-            "emailFrom": entry.from,
-            "emailSubject": entry.subject,
-            "emailDate": entry.date,
-            "color":colors[getRndInteger(0,6)],
-            "id": entry.id
-          } 
-          setData([test, ...data])
-          render.current = render.current + 1
-          setValue(data.length)
-      });
+
+
+        // json.forEach(function(singlemail) {
+        //   const test = { 
+        //     "emailFrom": entry.from,
+        //     "emailSubject": entry.subject,
+        //     "emailDate": entry.date,
+        //     "color":colors[getRndInteger(0,6)],
+        //     "id": entry.id
+        //   } 
+      //   json.forEach(function(singlemail) {
+      //     const mail = { 
+      //       "emailFrom": singlemail.from,
+      //       "emailSubject": singlemail.subject,
+      //       "emailDate": singlemail.date,
+      //       "color":colors[getRndInteger(0,6)],
+      //       "id": singlemail.id
+      //     } 
+      //     setData([mail, ...data])
+      //     // console.log(data)
+      //     // console.log('renderizado')
+      //     render.current = render.current + 1
+          
+      //     // console.log('correos')
+      //     // console.log(mail)
+      // });
+      setValue(data.length)
       })
       .catch((error) => console.error(error))
       .finally(() => setLoading(false))
@@ -116,10 +120,10 @@ const EmailMainScreen = ({ navigation, route }) => {
   useEffect(() => {
     if( render.current === 0 ) return;
     // listformating()
-    console.log('from data')
-    console.log(data)
-    console.log(value)
-  }, [render.current])
+    // console.log('from data')
+    // console.log(data)
+    // console.log(value)
+  }, [data])
 
   // const listformating = () => {
   //   const test = { 
@@ -129,7 +133,7 @@ const EmailMainScreen = ({ navigation, route }) => {
   //       "color":colors[getRndInteger(0,6)],
   //       "id": emailId
   // }
-  //   setData([test, ...data])
+  //   setData([...data, test])
   //   setValue(data.length)
   // }
 
@@ -142,22 +146,22 @@ const EmailMainScreen = ({ navigation, route }) => {
   }
 
   const RenderItem = ({ item }) => {
-    {console.log(item)}
+    {console.log(route.params.color)}
     return (
       <TouchableOpacity style={styles.emailMainView} onPress={() => onPressProps(item.item.id)}>
       <View style={styles.viewBackground}>
         <View style={styles.dotView}>
-          <Entypo name="dot-single" size={30} color={item.item.color}/>
+          <Entypo name="dot-single" size={30} color={route.params.color}/>
               <Text 
               numberOfLines={1} 
               adjustsFontSizeToFit={true} 
-              style={{fontSize:15,color:item.item.color}}> 
-                {item.item.emailFrom}
+              style={{fontSize:15,color:route.params.color}}> 
+                {item.item.from}
               </Text>
             </View>
         <View style={{height:"50%",width:"90%"}}>
-          <Text style={styles.emailSubjectText} numberOfLines={2} >{item.item.emailSubject}</Text>
-          <Text style={styles.emailDateText} numberOfLines={1} adjustsFontSizeToFit={true}>{item.item.emailDate}</Text>
+          <Text style={styles.emailSubjectText} numberOfLines={2} >{item.item.subject}</Text>
+          <Text style={styles.emailDateText} numberOfLines={1} adjustsFontSizeToFit={true}>{item.item.date}</Text>
         </View>
       </View>
     </TouchableOpacity>

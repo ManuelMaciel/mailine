@@ -46,7 +46,7 @@ const TermsScreen = ({ navigation }) => {
 
         <View style={styles.signinView}>
           <TouchableOpacity style={styles.signinButton} onPress={onBack}>
-            <Icon name="heart" size={20} color="#FFF" style={{marginLeft:"5%"}}/>
+            <AntDesign name="heart" size={20} color="#FFF" style={{marginLeft:"5%"}}/>
             <Text style={styles.signinText}> Ok llévame de vuelta </Text>
           </TouchableOpacity>
         </View>
