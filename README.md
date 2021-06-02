@@ -33,6 +33,8 @@ Mailine allows you to have many disposable emails temporarily and simultaneously
 <p align="row">
 <img src= "./assets/screenshots/sc1.jpg" width="200">
 <img src= "./assets/screenshots/sc2.jpg" width="200">
+<img src= "./assets/screenshots/sc21.jpg" width="200">
+<img src= "./assets/screenshots/sc22.jpg" width="200">
 <img src= "./assets/screenshots/sc3.jpg" width="200">
 <img src= "./assets/screenshots/sc4.jpg" width="200">
 <img src= "./assets/screenshots/sc5.jpg" width="200">
