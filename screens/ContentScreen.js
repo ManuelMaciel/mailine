@@ -9,7 +9,8 @@ import {
   ActivityIndicator,
   StyleSheet,
   Image,
-  StatusBar
+  StatusBar,
+  Animated
 } from "react-native"
 import SnackBar from 'react-native-snackbar-component'
 
@@ -40,10 +41,13 @@ const ContentScreen = ({ navigation, route }) => {
       .then((json) => {
         setLoading(true);
         setData(json["textBody"]);
-        setVisiblity(false)
+        
       })
       .catch((error) => console.error(error))
       .finally(() => setLoading(false))
+      setTimeout(() => {
+        setVisiblity(false)
+      }, 3000)
   }
 
   return (
@@ -59,7 +63,8 @@ const ContentScreen = ({ navigation, route }) => {
         <SnackBar 
           visible={visiblity} 
           textMessage="Sólo se mostrará el texto" actionHandler={seeMessage} actionText="Más información"
-          backgroundColor="#121212" messageColor="#FFF" accentColor="#FFF" autoHidingTime={3000}
+          backgroundColor="#121212" messageColor="#FFF" accentColor="#FFF" autoHidingTime={100000}
+          Animated={true}
         />
       </>
   )

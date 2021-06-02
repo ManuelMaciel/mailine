@@ -65,24 +65,49 @@ const EmailMainScreen = ({ navigation, route }) => {
 
   const OnPressNew = () => {
     console.log('hola')
-    fetch("https://www.1secmail.com/api/v1/?action=getMessages&login="+emailName+"&domain="+emailDomain)
+    fetch(`https://www.1secmail.com/api/v1/?action=getMessages&login=${emailName}&domain=${emailDomain}`)
       .then((response) => response.json())
       .then((json) => {
+        console.log('.............')
+        console.log(emailName)
+        console.log(emailDomain)
         console.log(json)
         setLoading(true)
         setData([])
-        json.map(singleMail => {
-          setEmailFrom(singleMail["from"])
-          setEmailSubject(singleMail["subject"])
-          setEmailDate(singleMail["date"])
-          setEmailId(singleMail["id"])
-          render.current = render.current + 1
+        // json.map(singleMail => {
+          // setEmailFrom(singleMail["from"])
+          // setEmailSubject(singleMail["subject"])
+          // setEmailDate(singleMail["date"])
+          // setEmailId(singleMail["id"])
+          // const test = { 
+          //   "emailFrom": singleMail["from"],
+          //   "emailSubject": singleMail["subject"],
+          //   "emailDate": singleMail["date"],
+          //   "color":colors[getRndInteger(0,6)],
+          //   "id": singleMail["id"]
+          // } 
+          // setData([test, ...data])
+          // render.current = render.current + 1
+          // setValue(data.length)
+          // listformating()
           // listformating()
           // console.log(singleMail["from"])
           // console.log(singleMail["subject"])
           // console.log(singleMail["date"])
           // console.log(singleMail["id"])
-        })
+        // })
+        json.forEach(function(entry) {
+          const test = { 
+            "emailFrom": entry.from,
+            "emailSubject": entry.subject,
+            "emailDate": entry.date,
+            "color":colors[getRndInteger(0,6)],
+            "id": entry.id
+          } 
+          setData([test, ...data])
+          render.current = render.current + 1
+          setValue(data.length)
+      });
       })
       .catch((error) => console.error(error))
       .finally(() => setLoading(false))
@@ -90,22 +115,23 @@ const EmailMainScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     if( render.current === 0 ) return;
-    listformating()
+    // listformating()
+    console.log('from data')
     console.log(data)
     console.log(value)
   }, [render.current])
 
-  const listformating = () => {
-    const test = { 
-        "emailFrom": emailFrom,
-        "emailSubject": emailSubject,
-        "emailDate": emailDate,
-        "color":colors[getRndInteger(0,6)],
-        "id": emailId
-  }
-    setData([test])
-    setValue(data.length)
-  }
+  // const listformating = () => {
+  //   const test = { 
+  //       "emailFrom": emailFrom,
+  //       "emailSubject": emailSubject,
+  //       "emailDate": emailDate,
+  //       "color":colors[getRndInteger(0,6)],
+  //       "id": emailId
+  // }
+  //   setData([test, ...data])
+  //   setValue(data.length)
+  // }
 
   const onPressProps = (id) => {
     navigation.navigate("Content",{
@@ -165,7 +191,7 @@ const EmailMainScreen = ({ navigation, route }) => {
         <View style={styles.mainView}/>
           <View style={styles.flastlistView}>
               <FlatList
-                data={Object.values(data)}
+                data={data}
                 renderItem={(item) => <RenderItem item={item} />}
                 ItemSeparatorComponent={renderSeparator}
                 bounces={true}  

@@ -28,6 +28,7 @@ const LoginScreen = ({ navigation }) => {
   const initialTest = () => {
     NetInfo.fetch().then(state => {
       if(state.isConnected == true){
+        setButtonText('Empecemos!');
         refRBSheet.current.open()
       } else {
         setButtonText('Se necesita Internet')
@@ -40,6 +41,7 @@ const LoginScreen = ({ navigation }) => {
   }
 
   useEffect(() => {
+    console.log('running initial test')
     initialTest();
     return () => {
       console.log('clean')
@@ -188,7 +190,7 @@ const styles = StyleSheet.create({
   },
   googleSignIn: {
     height: '70%',
-    width,
+    width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -200,7 +202,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
-    marginTop: '80%',
+    marginTop: '20%',
     shadowColor: '#1A1A1F',
     shadowOffset: { width: 0, height: 1},
     shadowOpacity: 0.8,
