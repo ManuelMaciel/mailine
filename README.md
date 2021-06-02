@@ -1,16 +1,16 @@
-# My Universal React Project
+# Mailine (temporary mail)
 
 <p>
   <!-- iOS -->
-  <a href="https://itunes.apple.com/app/apple-store/id982107779">
+  <a href="#">
     <img alt="Supports Expo iOS" longdesc="Supports Expo iOS" src="https://img.shields.io/badge/iOS-4630EB.svg?style=flat-square&logo=APPLE&labelColor=999999&logoColor=fff" />
   </a>
   <!-- Android -->
-  <a href="https://play.google.com/store/apps/details?id=host.exp.exponent&referrer=blankexample">
+  <a href="#">
     <img alt="Supports Expo Android" longdesc="Supports Expo Android" src="https://img.shields.io/badge/Android-4630EB.svg?style=flat-square&logo=ANDROID&labelColor=A4C639&logoColor=fff" />
   </a>
   <!-- Web -->
-  <a href="https://docs.expo.io/workflow/web/">
+  <a href="#">
     <img alt="Supports Expo Web" longdesc="Supports Expo Web" src="https://img.shields.io/badge/web-4630EB.svg?style=flat-square&logo=GOOGLE-CHROME&labelColor=4285F4&logoColor=fff" />
   </a>
 </p>
@@ -21,9 +21,22 @@
   - If you have native iOS code run `npx pod-install`
 - Run `yarn start` to start the bundler.
 - Open the project in a React runtime to try it:
-  - iOS: [Client iOS](https://itunes.apple.com/app/apple-store/id982107779)
-  - Android: [Client Android](https://play.google.com/store/apps/details?id=host.exp.exponent&referrer=blankexample)
+  - iOS: [Client iOS](#)
+  - Android: [Client Android](#)
   - Web: Any web browser
+
+## Screenshots
+
+<p align="row">
+<img src= "./assets/screenshots/sc1.jpg">
+<img src= "./assets/screenshots/sc2.jpg">
+<img src= "./assets/screenshots/sc3.jpg">
+<img src= "./assets/screenshots/sc4.jpg">
+<img src= "./assets/screenshots/sc5.jpg">
+<img src= "./assets/screenshots/sc6.jpg">
+<!-- <img src= "" width="400" > -->
+</p>
+
 
 ## Adding Native Code
 
