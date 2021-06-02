@@ -118,6 +118,13 @@ const EmailMainScreen = ({ navigation, route }) => {
   }
 
   useEffect(() => {
+    //first render
+    OnPressNew()
+    if (render.current !== 0) return;
+
+  }, [render.current])
+
+  useEffect(() => {
     if( render.current === 0 ) return;
     // listformating()
     // console.log('from data')

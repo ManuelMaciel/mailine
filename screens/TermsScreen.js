@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
   signinButton:{
     height:"35%",
     width:"80%",
-    backgroundColor:"#e36f62",
+    backgroundColor:"#e46565",
     borderRadius:10,
     justifyContent:"center",
     alignItems:"center",
