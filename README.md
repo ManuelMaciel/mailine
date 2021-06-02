@@ -25,15 +25,18 @@
   - Android: [Client Android](#)
   - Web: Any web browser
 
+## About the project
+Mailine allows you to have many disposable emails temporarily and simultaneously stop receiving spam emails.
+
 ## Screenshots
 
 <p align="row">
-<img src= "./assets/screenshots/sc1.jpg">
-<img src= "./assets/screenshots/sc2.jpg">
-<img src= "./assets/screenshots/sc3.jpg">
-<img src= "./assets/screenshots/sc4.jpg">
-<img src= "./assets/screenshots/sc5.jpg">
-<img src= "./assets/screenshots/sc6.jpg">
+<img src= "./assets/screenshots/sc1.jpg" width="200">
+<img src= "./assets/screenshots/sc2.jpg" width="200">
+<img src= "./assets/screenshots/sc3.jpg" width="200">
+<img src= "./assets/screenshots/sc4.jpg" width="200">
+<img src= "./assets/screenshots/sc5.jpg" width="200">
+<img src= "./assets/screenshots/sc6.jpg" width="200">
 <!-- <img src= "" width="400" > -->
 </p>
 
