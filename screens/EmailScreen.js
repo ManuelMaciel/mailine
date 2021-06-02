@@ -24,6 +24,7 @@ import { AntDesign } from "@expo/vector-icons";
 // import SwipeableFlatList from 'react-native-swipeable-flat-list-2'
 import RBSheet from "react-native-raw-bottom-sheet";
 import moment from "moment";
+import 'moment/locale/es'
 import {
   SwipeableFlatList,
   SwipeableQuickActionButton,
@@ -185,13 +186,13 @@ const EmailScreen = ({ navigation, route }) => {
 
 
   const updateState = () => {
-    if(data.value < 5) {
+    if(data.value < 4) {
       preventCharge.current = preventCharge.current + 1
       console.log(`prevent ${preventCharge.current}`)
       onPressNew()
     } else {
-      console.log('solo puedes tener 5 correos simultaneos')
-      ToastAndroid.show('Solo puedes tener 5 correos simultaneos',ToastAndroid.SHORT);
+      console.log('No puedes tener muchos correos simultaneos')
+      ToastAndroid.show('No puedes tener muchos correos simultaneos',ToastAndroid.SHORT);
     }
   }
 
@@ -323,6 +324,8 @@ const EmailScreen = ({ navigation, route }) => {
   const RenderItem = ({ item }) => {
     // console.log('from render item')
     // console.log(item)
+    moment.locale('es')
+    const dateFormat = moment(item.item.time).format('LLL')
     return (
       <>
       
@@ -353,7 +356,7 @@ const EmailScreen = ({ navigation, route }) => {
               adjustsFontSizeToFit={true}
               style={styles.timestampText}
             >
-              {moment(item.item.time).format("dddd, MMMM Do YYYY")}
+              { dateFormat }
             </Text>
           </View>
         </View>
@@ -515,9 +518,9 @@ const styles = StyleSheet.create({
     marginLeft: "10%",
   },
   newEmail: {
-    height: "20%",
+    height: "25%",
     width: "75%",
-    backgroundColor: "#657EE4",
+    backgroundColor: "#f50537",
     marginLeft: "10%",
     borderRadius: 10,
     marginTop: "8%",

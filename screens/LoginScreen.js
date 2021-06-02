@@ -63,8 +63,8 @@ const LoginScreen = ({ navigation }) => {
             borderTopLeftRadius:15,
             borderTopRightRadius:15,
             height:"30%",
-            backgroundColor:"#1A1A1F"
-          }
+            backgroundColor:"#1A1A1F", 
+          },
         }}
       >
         <SwipeRender
@@ -77,6 +77,8 @@ const LoginScreen = ({ navigation }) => {
           showsPagination={true}
           autoplayTimeout={3}
           bounces={true}
+          dotColor={'white'}
+          activeDotColor={'#f50537'}
         >
           {/* 1 */}
           <View style={styles.mainViewSwipe}>
@@ -176,7 +178,7 @@ const styles = StyleSheet.create({
   },
   imageStyleLogo: {
     height: '30%',
-    width: '60%'
+    width: '60%',
   },
   logo: {
     height: '50%',
@@ -186,7 +188,7 @@ const styles = StyleSheet.create({
   },
   loginText: {
     color: 'white',
-    fontSize: 15,
+    fontSize: 17,
     marginTop: '3%'
   },
   googleSignIn: {
@@ -198,7 +200,7 @@ const styles = StyleSheet.create({
   googleSignInButton: {
     height: '10%',
     width: '80%',
-    backgroundColor: '#e46565',
+    backgroundColor: '#f50537',
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
@@ -229,7 +231,7 @@ const styles = StyleSheet.create({
     elevation: 5,
     height: '20%',
     width: '80%',
-    backgroundColor: '#e46565',
+    backgroundColor: '#f50537',
     borderRadius: 10,
     marginTop: '10%',
     justifyContent: 'center',
