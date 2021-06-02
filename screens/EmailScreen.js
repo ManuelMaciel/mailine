@@ -130,7 +130,7 @@ const EmailScreen = ({ navigation }) => {
     };
     setInfo([list, ...info])
     setData({...data, loading: false, value: info.length })
-    console.log('finish 1')
+    // console.log('finish 1')
 
     render.current = render.current + 1
     // setObjectValue();
@@ -142,7 +142,7 @@ const EmailScreen = ({ navigation }) => {
     // console.log('data in data effect')
     // console.log(data)
     // console.log('info in data effect')
-    console.log(info)
+    // console.log(info)
   }, [data, info])
 
   useEffect(() => {
@@ -227,8 +227,8 @@ const EmailScreen = ({ navigation }) => {
   const setObjectValue = async () => {
     try {
       const json = JSON.stringify(info);
-      console.log(`json`)
-      console.log(json)
+      // console.log(`json`)
+      // console.log(json)
       await AsyncStorage.setItem("Emails", json);
       setData({...data, value: info.length })
     } catch (error) {
@@ -263,14 +263,14 @@ const EmailScreen = ({ navigation }) => {
     if (moment(endTime).isAfter(currentTime)) {
       navigation.navigate('EmailNow', {"email": email})
     } else {
-      refRBSheet.open();
+      refRBSheet.current.open();
     }
   };
 
   const deleteItemById = (email) => {
     const filteredData = info.filter(item => item.email !== email);
-    console.log(`filt`)
-    console.log(filteredData)
+    // console.log(`filt`)
+    // console.log(filteredData)
     setInfo(filteredData)
     try {
       const json = JSON.stringify(filteredData);

@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import {
   View,
   Text,
@@ -13,6 +13,7 @@ import {
   PanResponder,
   Animated,
   TouchableHighlight,
+  RefreshControl,
   StatusBar
 } from "react-native"
 import { Entypo } from '@expo/vector-icons';
@@ -22,17 +23,26 @@ const width = Dimensions.get('window').width
 
 const EmailMainScreen = ({ navigation, route }) => {
 
+  // const { emailParams } = route.params;
+  // console.log(route.params.email[0])
+
   const [ data, setData ] = useState([]) 
-  const [ loading, setLoading ] = useState(true) 
+  const [ loading, setLoading ] = useState(false) 
   const [ email, setEmail ] = useState('')
   const [ emailFrom, setEmailFrom ] = useState('')
   const [ emailSubject, setEmailSubject ] = useState('')
   const [ emailDate, setEmailDate ] = useState('')
-  const [ emailName, setEmailName ] = useState(route.params.email.split("@")[0])
-  const [ emailDomain, setEmailDomain ] = useState(route.params.email.split("@")[1])
+  const [ emailName, setEmailName ] = useState(route.params.email[0].split("@")[0])
+  const [ emailDomain, setEmailDomain ] = useState(route.params.email[0].split("@")[1])
   const [ emailId, setEmailId ] = useState('')
-  const [ value, setValue ] = useState(1)
-  
+  const [ value, setValue ] = useState(0)
+
+  const render = useRef(0)
+
+  // const [data, setData] = useState({
+
+  // })
+
   const colors = [
     "#00B0FF",
     "#00BFA6",
@@ -54,22 +64,36 @@ const EmailMainScreen = ({ navigation, route }) => {
   }
 
   const OnPressNew = () => {
+    console.log('hola')
     fetch("https://www.1secmail.com/api/v1/?action=getMessages&login="+emailName+"&domain="+emailDomain)
       .then((response) => response.json())
       .then((json) => {
+        console.log(json)
         setLoading(true)
         setData([])
-        for (i in json){
-          setEmailFrom(json[i]["from"])
-          setEmailSubject(json[i]["subject"])
-          setEmailDate(json[i]["date"])
-          setEmailId(json[i]["id"])
-          listformating()
-        }
+        json.map(singleMail => {
+          setEmailFrom(singleMail["from"])
+          setEmailSubject(singleMail["subject"])
+          setEmailDate(singleMail["date"])
+          setEmailId(singleMail["id"])
+          render.current = render.current + 1
+          // listformating()
+          // console.log(singleMail["from"])
+          // console.log(singleMail["subject"])
+          // console.log(singleMail["date"])
+          // console.log(singleMail["id"])
+        })
       })
       .catch((error) => console.error(error))
       .finally(() => setLoading(false))
   }
+
+  useEffect(() => {
+    if( render.current === 0 ) return;
+    listformating()
+    console.log(data)
+    console.log(value)
+  }, [render.current])
 
   const listformating = () => {
     const test = { 
@@ -79,7 +103,7 @@ const EmailMainScreen = ({ navigation, route }) => {
         "color":colors[getRndInteger(0,6)],
         "id": emailId
   }
-    setData(test)
+    setData([test])
     setValue(data.length)
   }
 
@@ -91,25 +115,28 @@ const EmailMainScreen = ({ navigation, route }) => {
     })
   }
 
-  const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.emailMainView} onPress={() => onPressProps(item.id)}>
+  const RenderItem = ({ item }) => {
+    {console.log(item)}
+    return (
+      <TouchableOpacity style={styles.emailMainView} onPress={() => onPressProps(item.item.id)}>
       <View style={styles.viewBackground}>
         <View style={styles.dotView}>
-          <Entypo name="dot-single" size={30} color={item.color}/>
+          <Entypo name="dot-single" size={30} color={item.item.color}/>
               <Text 
               numberOfLines={1} 
               adjustsFontSizeToFit={true} 
-              style={{fontSize:15,color:item.color}}> 
-                {item.emailFrom}
+              style={{fontSize:15,color:item.item.color}}> 
+                {item.item.emailFrom}
               </Text>
             </View>
         <View style={{height:"50%",width:"90%"}}>
-          <Text style={styles.emailSubjectText} numberOfLines={2} >{item.emailSubject}</Text>
-          <Text style={styles.emailDateText} numberOfLines={1} adjustsFontSizeToFit={true}>{item.emailDate}</Text>
+          <Text style={styles.emailSubjectText} numberOfLines={2} >{item.item.emailSubject}</Text>
+          <Text style={styles.emailDateText} numberOfLines={1} adjustsFontSizeToFit={true}>{item.item.emailDate}</Text>
         </View>
       </View>
     </TouchableOpacity>
-  );
+    )
+  };
 
   const renderSeparator = () => (
     <View
@@ -138,12 +165,13 @@ const EmailMainScreen = ({ navigation, route }) => {
         <View style={styles.mainView}/>
           <View style={styles.flastlistView}>
               <FlatList
-                data={data}
-                renderItem={renderItem}
+                data={Object.values(data)}
+                renderItem={(item) => <RenderItem item={item} />}
                 ItemSeparatorComponent={renderSeparator}
                 bounces={true}  
-                onRefresh={OnPressNew}
-                refreshing={loading}
+                // onRefresh={() => OnPressNew()}
+                // refreshing={loading}
+                refreshControl={<RefreshControl refreshing={loading} onRefresh={() => OnPressNew()} />}
                 keyExtractor={(item, index) => 'key'+index}
                 ListEmptyComponent={listEmptyComponent}
               />

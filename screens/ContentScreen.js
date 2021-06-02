@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -13,7 +13,7 @@ import {
 } from "react-native"
 import SnackBar from 'react-native-snackbar-component'
 
-const ContentScreen = ({ navigation }) => {
+const ContentScreen = ({ navigation, route }) => {
 
   const [ data, setData ] = useState('')
   const [ loading, setLoading ] = useState(true)
@@ -40,7 +40,7 @@ const ContentScreen = ({ navigation }) => {
       .then((json) => {
         setLoading(true);
         setData(json["textBody"]);
-        setVisible(false)
+        setVisiblity(false)
       })
       .catch((error) => console.error(error))
       .finally(() => setLoading(false))
