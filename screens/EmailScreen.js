@@ -142,7 +142,7 @@ const EmailScreen = ({ navigation }) => {
     // console.log('data in data effect')
     // console.log(data)
     // console.log('info in data effect')
-    // console.log(info)
+    console.log(info)
   }, [data, info])
 
   useEffect(() => {
@@ -271,15 +271,15 @@ const EmailScreen = ({ navigation }) => {
     const filteredData = info.filter(item => item.email !== email);
     console.log(`filt`)
     console.log(filteredData)
-    // setInfo({filteredData})
-    // try {
-    //   const json = JSON.stringify(filteredData);
-    //   AsyncStorage.setItem("Emails", json);
-    //   getMyObject();
-    //   setData({...data, value: info.length })
-    // } catch (error) {
-    //   console.error(error);
-    // }    
+    setInfo(filteredData)
+    try {
+      const json = JSON.stringify(filteredData);
+      AsyncStorage.setItem("Emails", json);
+      getMyObject();
+      setData({...data, value: info.length })
+    } catch (error) {
+      console.error(error);
+    }    
   };
 
   
