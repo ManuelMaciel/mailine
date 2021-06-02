@@ -7,21 +7,14 @@ import {
   Dimensions,
   StyleSheet,
   Image,
-  Alert,
   ToastAndroid,
-  Modal,
-  TouchableHighlight,
   Animated,
   Easing,
   StatusBar,
-  FlatList,
-  LayoutAnimation
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Clipboard from 'expo-clipboard';
 import { AntDesign } from "@expo/vector-icons";
-// import {SwipeableFlatList} from 'react-native-swipeable-flat-list';
-// import SwipeableFlatList from 'react-native-swipeable-flat-list-2'
 import RBSheet from "react-native-raw-bottom-sheet";
 import moment from "moment";
 import 'moment/locale/es'
@@ -44,18 +37,8 @@ const EmailScreen = ({ navigation, route }) => {
   });
 
   const [ info, setInfo ] = useState([])
-
   const preventCharge = useRef(0)
-
   const render = useRef(0)
-  
-  // const [loading, setLoading] = useState(true);
-  // const [email, setEmail] = useState();
-  // const [data, setData] = useState([]);
-  // const [value, setValue] = useState(0);
-  // const [modalVisible, setModalVisible] = useState(true);
-  // const [copyEmail, setCopyEmail] = useState("");
-  // const [verticalVal, setVerticalVal] = useState(new Animated.Value(0));
 
   const refRBSheet = useRef();
 
