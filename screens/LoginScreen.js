@@ -14,17 +14,18 @@ const LoginScreen = ({ navigation }) => {
 
   const refRBSheet = useRef();
 
+  // Cuando se presiona verifica el estado de la red, si esta conectado navega a la pantalla de email
   const onSignIn = () => {
     NetInfo.fetch().then(state => {
       if (state.isConnected == true){
-        setButtonText('Empecemos!');
+        // setButtonText('Empecemos!');
         navigation.navigate("Email")
       } else {
         setButtonText('Se necesita Internet')
       }
     })
   }
-
+  // Al cargar el componente verifica el estado de la red, si esta conectado muestra algunos terminos y setea el texto del button
   const initialTest = () => {
     NetInfo.fetch().then(state => {
       if(state.isConnected == true){
@@ -35,11 +36,11 @@ const LoginScreen = ({ navigation }) => {
       }
     })
   }
-
+  // Al tocar el logo muestra algunos terminos
   const onPressLogo = () => {
     refRBSheet.current.open()
   }
-
+  // Primer renderizado, corre el test inicial
   useEffect(() => {
     console.log('running initial test')
     initialTest();
@@ -47,7 +48,7 @@ const LoginScreen = ({ navigation }) => {
       console.log('clean')
     }
   }, [])
-
+// 
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={'#1A1A1F'} barStyle='light-content' />

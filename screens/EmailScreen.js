@@ -18,7 +18,7 @@ import {
   LayoutAnimation
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Clipboard from "@react-native-clipboard/clipboard";
+import Clipboard from 'expo-clipboard';
 import { AntDesign } from "@expo/vector-icons";
 // import {SwipeableFlatList} from 'react-native-swipeable-flat-list';
 // import SwipeableFlatList from 'react-native-swipeable-flat-list-2'
@@ -33,7 +33,7 @@ import {
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
-const EmailScreen = ({ navigation }) => {
+const EmailScreen = ({ navigation, route }) => {
 
   const [data, setData] = useState({
     loading: true,
@@ -68,13 +68,33 @@ const EmailScreen = ({ navigation }) => {
   ];
 
   const onLongPressEmail = (mail) => {
-    Clipboard.setString(mail);
-    ToastAndroid.show(`Email copiado ${ToastAndroid.LONG}`);
+    Clipboard.setString(mail[0]);
+    ToastAndroid.show('Email copiado',ToastAndroid.LONG);
+    console.log(mail)
   };
 
   // se ejecuta una sola vez al renderizar el componente
   useEffect(() => {
-    getMyObject();
+    console.log('first render')
+    const getMyFirstObject = async () => {
+      console.log('run function in first render')
+      try {
+        const json = await AsyncStorage.getItem("Emails");
+        // if (json) {
+          console.log('run if json')
+          const datajson = JSON.parse(json);
+          console.log('datajson')
+          console.log(datajson)
+          setInfo(datajson)
+          setData({...data , email: json[0], loading: true, value: info.length })
+          
+        // } 
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getMyFirstObject();
+    
     Animated.timing(data.verticalVal, {
       toValue: 10,
       duration: 1000,
@@ -103,15 +123,26 @@ const EmailScreen = ({ navigation }) => {
     };
   }, []);
 
+  useEffect(() => {
+    console.log('fuck this shit data')
+    console.log(data)
+    console.log('fuck this info')
+    console.log(info)
+    setData({...data, loading: false, value: info.length })
+  },[info])
+
   const getMyObject = async () => {
+    console.log('run function in first render')
     try {
       const json = await AsyncStorage.getItem("Emails");
-      // console.log(json)
-      if (json) {
+      // if (json) {
+        console.log('run if json')
         const datajson = JSON.parse(json);
+        console.log('datajson')
+        console.log(datajson)
         setInfo(datajson)
         setData({...data , email: json[0], loading: true, value: info.length })
-      }
+      // } 
     } catch (error) {
       console.error(error);
     }
@@ -134,7 +165,7 @@ const EmailScreen = ({ navigation }) => {
 
     render.current = render.current + 1
     // setObjectValue();
-    // getMyObject();
+    // getMyObject();    
   };
 
   useEffect(() => {
@@ -154,9 +185,14 @@ const EmailScreen = ({ navigation }) => {
 
 
   const updateState = () => {
-    preventCharge.current = preventCharge.current + 1
-    console.log(`prevent ${preventCharge.current}`)
-    onPressNew()
+    if(data.value < 5) {
+      preventCharge.current = preventCharge.current + 1
+      console.log(`prevent ${preventCharge.current}`)
+      onPressNew()
+    } else {
+      console.log('solo puedes tener 5 correos simultaneos')
+      ToastAndroid.show('Solo puedes tener 5 correos simultaneos',ToastAndroid.SHORT);
+    }
   }
 
   // const onPressNew = async () => {
