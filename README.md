@@ -23,7 +23,7 @@
 - Open the project in a React runtime to try it:
   - iOS: [Client iOS](#)
   - Android: [Client Android](#)
-  - Web: Any web browser
+  - Web: (not yeyt)
 
 ## About the project
 Mailine allows you to have many disposable emails temporarily and simultaneously stop receiving spam emails.
