@@ -22,7 +22,8 @@ const StackNavigator = () => {
           gestureDirection: 'vertical',
           animationEnabled: false,
         }}
-        mode={'card'}
+        // 
+        mode='card'
       >
         <Stack.Screen name='Terms' component={TermsScreen} options={{ headerShown:false }} />
         <Stack.Screen name='Login' component={LoginScreen} options={{ headerShown:false }} />

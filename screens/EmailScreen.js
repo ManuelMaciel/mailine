@@ -64,7 +64,7 @@ const EmailScreen = ({ navigation, route }) => {
       console.log('run function in first render')
       try {
         const json = await AsyncStorage.getItem("Emails");
-        // if (json) {
+        if (json) {
           console.log('run if json')
           const datajson = JSON.parse(json);
           console.log('datajson')
@@ -72,7 +72,7 @@ const EmailScreen = ({ navigation, route }) => {
           setInfo(datajson)
           setData({...data , email: json[0], loading: true, value: info.length })
           
-        // } 
+        } 
       } catch (error) {
         console.error(error);
       }
@@ -119,14 +119,14 @@ const EmailScreen = ({ navigation, route }) => {
     console.log('run function in first render')
     try {
       const json = await AsyncStorage.getItem("Emails");
-      // if (json) {
+      if (json) {
         console.log('run if json')
         const datajson = JSON.parse(json);
         console.log('datajson')
         console.log(datajson)
         setInfo(datajson)
         setData({...data , email: json[0], loading: true, value: info.length })
-      // } 
+      } 
     } catch (error) {
       console.error(error);
     }
